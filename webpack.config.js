@@ -4,7 +4,7 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// const { DefinePlugin } = require('webpack');
+const { DefinePlugin } = require('webpack');
 const path = require('path');
 const deps = require('./package.json').dependencies;
 const Dotenv = require('dotenv-webpack');
@@ -25,7 +25,6 @@ module.exports = (env) => {
   }
 
   const dotenvPath = path.resolve(__dirname, `.env.${mode}`);
-  console.log(`Loading .env file from: ${dotenvPath}`);
   require('dotenv').config({ path: dotenvPath });
 
   const plugins = [
@@ -39,9 +38,11 @@ module.exports = (env) => {
     new ProvidePlugin({
       React: 'react'
     }),
-    // new DefinePlugin({
-    //   'process.env.NODE_ENV': JSON.stringify(mode)
-    // }),
+    new DefinePlugin({
+      'process.env.API_URL': JSON.stringify(process.env.API_URL),
+      'process.env.API_BASENAME': JSON.stringify(process.env.API_BASENAME),
+      'process.env.API_KEY': JSON.stringify(process.env.API_KEY)
+    }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static', // 📊 Генерирует HTML файл с отчетом
       openAnalyzer: false, // 🌐 Открывает отчет автоматически в браузере
@@ -52,7 +53,7 @@ module.exports = (env) => {
       path: path.resolve(__dirname, `.env.${mode}`)
     }),
     new ModuleFederationPlugin({
-      name: 'App name', // 📝 Введите название проекта
+      name: 'AppName', // 📝 Введите название проекта
       filename: 'remoteEntry.js',
       remotes: {},
       exposes: {
