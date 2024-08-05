@@ -57,7 +57,7 @@ module.exports = (env) => {
       filename: 'remoteEntry.js',
       remotes: {},
       exposes: {
-        './App': './src/App'
+        './App': './src/App' // 🧩 Замение "App" - на название компонента, который вы хотите экспортировать
       },
       shared: {
         ...deps,
@@ -127,7 +127,7 @@ module.exports = (env) => {
           use: 'babel-loader'
         },
         {
-          test: /\.(png|jpg|jpeg|gif)$/i,
+          test: /\.(png|jpg|jpeg|gif|svg)$/i,
           type: 'asset/resource'
         },
         {
